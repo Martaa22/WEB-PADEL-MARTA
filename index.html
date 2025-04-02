@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pádel Score Pro</title>
+    <style>
+        :root {
+            --azul-claro: #E6F2FF;
+            --azul-medio: #B3D9FF;
+            --azul-oscuro: #3399FF;
+            --blanco: #FFFFFF;
+            --gris: #F5F5F5;
+            --texto: #333333;
+            --verde: #4CAF50;
+            --rojo: #F44336;
+            --amarillo: #FFC107;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: var(--gris);
+            color: var(--texto);
+            line-height: 1.6;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: var(--blanco);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: var(--azul-oscuro);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+            background-color: var(--azul-claro);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--azul-oscuro);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--azul-medio);
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: var(--blanco);
+        }
+        
+        .date-picker {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .date-picker input {
+            flex: 1;
+        }
+        
+        .sets-container {
+            margin: 15px 0;
+        }
+        
+        .set {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            background-color: var(--azul-claro);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .set-label {
+            min-width: 60px;
+            font-weight: 500;
+            color: var(--azul-oscuro);
+        }
+        
+        .set-inputs {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        
+        .set-input {
+            width: 40px;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid var(--azul-medio);
+            border-radius: 5px;
+            margin: 0 5px;
+            background-color: var(--blanco);
+        }
+        
+        .set-separator {
+            font-weight: bold;
+        }
+        
+        .reverse-btn {
+            background: none;
+            border: none;
+            color: var(--azul-oscuro);
+            font-size: 18px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--azul-oscuro);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: var(--azul-medio);
+            color: var(--texto);
+        }
+        
+        .btn-danger {
+            background-color: var(--rojo);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--amarillo);
+            color: var(--texto);
+        }
+        
+        .btn-primary:hover, .btn-primary:active {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary:hover, .btn-secondary:active {
+            background-color: #99ccff;
+        }
+        
+        .matches-list {
+            margin-top: 20px;
+        }
+        
+        .match-card {
+            background-color: var(--azul-claro);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .match-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .teams {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .team1 {
+            color: var(--azul-oscuro);
+        }
+        
+        .team2 {
+            color: var(--azul-oscuro);
+        }
+        
+        .sets-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        
+        .set-score {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .winner {
+            background-color: var(--verde);
+            color: white;
+        }
+        
+        .loser {
+            background-color: var(--rojo);
+            color: white;
+        }
+        
+        .winner-badge {
+            margin-left: 5px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            background-color: var(--verde);
+            color: white;
+        }
+        
+        .match-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .match-actions button {
+            padding: 8px;
+            font-size: 14px;
+        }
+        
+        .share-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .share-btn {
+            background-color: var(--azul-oscuro);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .edit-form {
+            display: none;
+            margin-top: 15px;
+            background-color: var(--azul-claro);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .no-matches {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Pádel Score Pro</h1>
+        
+        <div class="input-group">
+            <label for="team1">Pareja 1:</label>
+            <input type="text" id="team1" placeholder="Nombre pareja 1">
+        </div>
+        
+        <div class="input-group">
+            <label for="team2">Pareja 2:</label>
+            <input type="text" id="team2" placeholder="Nombre pareja 2">
+        </div>
+        
+        <div class="input-group">
+            <label for="matchDate">Fecha del partido:</label>
+            <div class="date-picker">
+                <input type="date" id="matchDate">
+                <input type="time" id="matchTime" value="19:00">
+            </div>
+        </div>
+        
+        <div class="sets-container" id="setsContainer">
+            <!-- Sets se añadirán aquí -->
+        </div>
+        
+        <div class="buttons">
+            <button id="addSetBtn" class="btn-secondary">➕ Añadir Set</button>
+            <button id="saveBtn" class="btn-primary">💾 Guardar Partido</button>
+        </div>
+        
+        <div class="matches-list" id="matchesList">
+            <!-- Lista de partidos aparecerá aquí -->
+        </div>
+        
+        <div class="share-section">
+            <button id="shareAppBtn" class="share-btn">📲 Compartir App</button>
+        </div>
+    </div>
+
+    <script>
+        // Variables
+        let matches = JSON.parse(localStorage.getItem('padelMatches')) || [];
+        let setCount = 3;
+        let editingIndex = null;
+        
+        // Elementos DOM
+        const team1Input = document.getElementById('team1');
+        const team2Input = document.getElementById('team2');
+        const matchDateInput = document.getElementById('matchDate');
+        const matchTimeInput = document.getElementById('matchTime');
+        const setsContainer = document.getElementById('setsContainer');
+        const addSetBtn = document.getElementById('addSetBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const matchesList = document.getElementById('matchesList');
+        const shareAppBtn = document.getElementById('shareAppBtn');
+        
+        // Establecer fecha actual por defecto
+        const today = new Date();
+        matchDateInput.value = today.toISOString().split('T')[0];
+        
+        // Crear elementos de set
+        function createSetElement(setNumber) {
+            const setDiv = document.createElement('div');
+            setDiv.className = 'set';
+            
+            const label = document.createElement('div');
+            label.className = 'set-label';
+            label.textContent = `Set ${setNumber}`;
+            
+            const inputsDiv = document.createElement('div');
+            inputsDiv.className = 'set-inputs';
+            
+            const input1 = document.createElement('input');
+            input1.type = 'number';
+            input1.className = 'set-input';
+            input1.id = `set${setNumber}-team1`;
+            input1.placeholder = '0';
+            input1.min = '0';
+            
+            const separator = document.createElement('div');
+            separator.className = 'set-separator';
+            separator.textContent = '-';
+            
+            const input2 = document.createElement('input');
+            input2.type = 'number';
+            input2.className = 'set-input';
+            input2.id = `set${setNumber}-team2`;
+            input2.placeholder = '0';
+            input2.min = '0';
+            
+            const reverseBtn = document.createElement('button');
+            reverseBtn.className = 'reverse-btn';
+            reverseBtn.innerHTML = '&#x21C6;';
+            reverseBtn.onclick = () => reverseSet(setNumber);
+            
+            inputsDiv.appendChild(input1);
+            inputsDiv.appendChild(separator);
+            inputsDiv.appendChild(input2);
+            
+            setDiv.appendChild(label);
+            setDiv.appendChild(inputsDiv);
+            setDiv.appendChild(reverseBtn);
+            
+            return setDiv;
+        }
+        
+        // Invertir set
+        function reverseSet(setNumber) {
+            const input1 = document.getElementById(`set${setNumber}-team1`);
+            const input2 = document.getElementById(`set${setNumber}-team2`);
+            const temp = input1.value;
+            input1.value = input2.value;
+            input2.value = temp;
+        }
+        
+        // Inicializar sets
+        function initializeSets() {
+            setsContainer.innerHTML = '';
+            for (let i = 1; i <= setCount; i++) {
+                setsContainer.appendChild(createSetElement(i));
+            }
+        }
+        
+        // Guardar partido
+        function saveMatch() {
+            const team1 = team1Input.value.trim();
+            const team2 = team2Input.value.trim();
+            const date = matchDateInput.value;
+            const time = matchTimeInput.value;
+            
+            if (!team1 || !team2) {
+                alert('Por favor ingresa los nombres de ambas parejas');
+                return;
+            }
+            
+            if (!date) {
+                alert('Por favor selecciona una fecha');
+                return;
+            }
+            
+            const sets = [];
+            let team1Wins = 0;
+            let team2Wins = 0;
+            let hasSets = false;
+            
+            for (let i = 1; i <= setCount; i++) {
+                const score1 = document.getElementById(`set${i}-team1`).value;
+                const score2 = document.getElementById(`set${i}-team2`).value;
+                
+                if (score1 && score2) {
+                    hasSets = true;
+                    const setScore = `${score1}-${score2}`;
+                    sets.push(setScore);
+                    
+                    if (parseInt(score1) > parseInt(score2)) {
+                        team1Wins++;
+                    } else {
+                        team2Wins++;
+                    }
+                }
+            }
+            
+            if (!hasSets) {
+                alert('Por favor ingresa al menos un set');
+                return;
+            }
+            
+            const winner = team1Wins > team2Wins ? team1 : team2;
+            const dateTime = `${date} ${time}`;
+            const formattedDate = new Date(dateTime).toLocaleString();
+            
+            const match = {
+                team1,
+                team2,
+                sets,
+                team1Wins,
+                team2Wins,
+                winner,
+                date: formattedDate,
+                rawDate: dateTime
+            };
+            
+            if (editingIndex !== null) {
+                // Editar partido existente
+                matches[editingIndex] = match;
+                editingIndex = null;
+                saveBtn.textContent = '💾 Guardar Partido';
+            } else {
+                // Añadir nuevo partido
+                matches.unshift(match);
+            }
+            
+            localStorage.setItem('padelMatches', JSON.stringify(matches));
+            renderMatches();
+            resetForm();
+        }
+        
+        // Mostrar partidos
+        function renderMatches() {
+            matchesList.innerHTML = '';
+            
+            if (matches.length === 0) {
+                matchesList.innerHTML = '<div class="no-matches">No hay partidos registrados aún</div>';
+                return;
+            }
+            
+            matches.forEach((match, index) => {
+                const matchCard = document.createElement('div');
+                matchCard.className = 'match-card';
+                
+                const matchHeader = document.createElement('div');
+                matchHeader.className = 'match-header';
+                
+                const matchDate = document.createElement('div');
+                matchDate.className = 'match-date';
+                matchDate.textContent = match.date;
+                
+                matchHeader.appendChild(matchDate);
+                
+                const teams = document.createElement('div');
+                teams.className = 'teams';
+                
+                const team1Span = document.createElement('span');
+                team1Span.className = 'team1';
+                team1Span.textContent = match.team1;
+                if (match.winner === match.team1) {
+                    team1Span.innerHTML += ' <span class="winner-badge">GANADOR</span>';
+                }
+                
+                const team2Span = document.createElement('span');
+                team2Span.className = 'team2';
+                team2Span.textContent = match.team2;
+                if (match.winner === match.team2) {
+                    team2Span.innerHTML += ' <span class="winner-badge">GANADOR</span>';
+                }
+                
+                teams.appendChild(team1Span);
+                teams.appendChild(team2Span);
+                
+                const setsDisplay = document.createElement('div');
+                setsDisplay.className = 'sets-display';
+                
+                match.sets.forEach((set, setIndex) => {
+                    const [score1, score2] = set.split('-');
+                    const setDiv = document.createElement('div');
+                    setDiv.className = 'set-score';
+                    
+                    if (parseInt(score1) > parseInt(score2)) {
+                        setDiv.classList.add('winner');
+                        setDiv.title = `Ganado por ${match.team1}`;
+                    } else {
+                        setDiv.classList.add('loser');
+                        setDiv.title = `Ganado por ${match.team2}`;
+                    }
+                    
+                    setDiv.textContent = set;
+                    setsDisplay.appendChild(setDiv);
+                });
+                
+                const matchActions = document.createElement('div');
+                matchActions.className = 'match-actions';
+                
+                const editBtn = document.createElement('button');
+                editBtn.className = 'btn-warning';
+                editBtn.innerHTML = '✏️ Editar';
+                editBtn.onclick = () => editMatch(index);
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-danger';
+                deleteBtn.innerHTML = '🗑️ Eliminar';
+                deleteBtn.onclick = () => deleteMatch(index);
+                
+                matchActions.appendChild(editBtn);
+                matchActions.appendChild(deleteBtn);
+                
+                matchCard.appendChild(matchHeader);
+                matchCard.appendChild(teams);
+                matchCard.appendChild(setsDisplay);
+                matchCard.appendChild(matchActions);
+                
+                matchesList.appendChild(matchCard);
+            });
+        }
+        
+        // Editar partido
+        function editMatch(index) {
+            const match = matches[index];
+            editingIndex = index;
+            
+            team1Input.value = match.team1;
+            team2Input.value = match.team2;
+            
+            // Establecer fecha y hora
+            const dateObj = new Date(match.rawDate);
+            matchDateInput.value = dateObj.toISOString().split('T')[0];
+            matchTimeInput.value = `${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
+            
+            // Limpiar sets existentes
+            setsContainer.innerHTML = '';
+            setCount = match.sets.length;
+            
+            // Crear sets con los valores del partido
+            match.sets.forEach((set, i) => {
+                const [score1, score2] = set.split('-');
+                const setElement = createSetElement(i + 1);
+                document.getElementById(`set${i + 1}-team1`).value = score1;
+                document.getElementById(`set${i + 1}-team2`).value = score2;
+                setsContainer.appendChild(setElement);
+            });
+            
+            saveBtn.textContent = '💾 Guardar Cambios';
+            window.scrollTo(0, 0);
+        }
+        
+        // Eliminar partido
+        function deleteMatch(index) {
+            if (confirm('¿Estás seguro de que quieres eliminar este partido?')) {
+                matches.splice(index, 1);
+                localStorage.setItem('padelMatches', JSON.stringify(matches));
+                renderMatches();
+                
+                if (editingIndex === index) {
+                    editingIndex = null;
+                    resetForm();
+                } else if (editingIndex > index) {
+                    editingIndex--;
+                }
+            }
+        }
+        
+        // Resetear formulario
+        function resetForm() {
+            team1Input.value = '';
+            team2Input.value.value = '';
+            matchDateInput.value = new Date().toISOString().split('T')[0];
+            matchTimeInput.value = '19:00';
+            setCount = 3;
+            initializeSets();
+            team1Input.focus();
+            saveBtn.textContent = '💾 Guardar Partido';
+            editingIndex = null;
+        }
+        
+        // Compartir app
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Pádel Score Pro',
+                    text: 'Registra y gestiona tus partidos de pádel con esta app',
+                    url: window.location.href
+                }).catch(err => {
+                    console.log('Error al compartir:', err);
+                    fallbackShare();
+                });
+            } else {
+                fallbackShare();
+            }
+        }
+        
+        function fallbackShare() {
+            const url = window.location.href;
+            const text = `¡Echa un vistazo a Pádel Score Pro! Una app para registrar tus partidos de pádel: ${url}`;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Enlace copiado al portapapeles. ¡Pégalo y compártelo!');
+                });
+            } else {
+                prompt('Copia este enlace para compartir la app:', url);
+            }
+        }
+        
+        // Event listeners
+        addSetBtn.addEventListener('click', () => {
+            if (setCount < 5) {
+                setCount++;
+                setsContainer.appendChild(createSetElement(setCount));
+            } else {
+                alert('Máximo 5 sets permitidos');
+            }
+        });
+        
+        saveBtn.addEventListener('click', saveMatch);
+        shareAppBtn.addEventListener('click', shareApp);
+        
+        // Inicializar
+        initializeSets();
+        renderMatches();
+    </script>
+</body>
+</html>
